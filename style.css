@@ -1,0 +1,24 @@
+html, body {
+  height: 100%;
+  margin: 0;              
+}
+body {
+  display: grid;          
+  place-items: center;    /* centro horizontal + vertical */
+  background: #e185c7;  
+  color: rgb(241, 223, 61);     
+}
+
+h1{
+  margin-bottom: -10%;
+  margin-top: -10%;
+  font-family: monospace;
+  font-size: 40px;
+}
+
+canvas {
+  margin-top: -20%;  
+  border-radius: 5%;
+  border: rgb(241, 223, 61) solid 15px;
+  display: block;         /* evita espacio fantasma */
+}
