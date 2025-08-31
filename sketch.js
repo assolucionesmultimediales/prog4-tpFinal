@@ -25,6 +25,8 @@ const GHOST_SCALE = 0.6; // más chico
 
 //fuente
 let fuente;
+let mostrarLose = false;
+let mostrarWin = false;
 
 //puntajes
 let puntaje = 0;
@@ -35,7 +37,7 @@ function preload() {
   handPose = ml5.handPose(); // API nueva (v1.x)
   estrellita = loadImage("assets/estrellita.gif");
   fantasma = loadImage("assets/fantasma.gif");
-  fuente = loadFont('assets/ARCADE_N.TTF')
+  fuente = loadFont("assets/ARCADE_N.TTF");
 }
 
 function setup() {
@@ -54,26 +56,26 @@ function setup() {
   ghostY = 0;
 
   //texto
-  textAlign(CENTER)
-  textFont(fuente)
-  rectMode(CENTER)
+  textAlign(CENTER);
+  textFont(fuente);
+  rectMode(CENTER);
 }
 
 function draw() {
   image(video, 0, 0, width, height);
 
-    //puntaje
-    push()
-    fill('yellow')
-    noStroke()
-    rect(83,43,140,40,10)
-    pop()
-    push()
-    fill('#e185c7')
-    noStroke()
-    textSize(12)
-    text('PUNTAJE:' + puntaje, 80, 50)
-    pop()
+  //puntaje
+  push();
+  fill("yellow");
+  noStroke();
+  rect(83, 43, 140, 40, 10);
+  pop();
+  push();
+  fill("#e185c7");
+  noStroke();
+  textSize(12);
+  text("PUNTAJE:" + puntaje, 80, 50);
+  pop();
 
   // estrella que cae
   noStroke();
@@ -112,12 +114,11 @@ function draw() {
     const tS = smoothTo(thumb, smThumb, 0.5);
     const iS = smoothTo(index, smIndex, 0.5);
 
-    // dibujar red 
-    const netW = 10; // grosor 
+    // dibujar red
+    const netW = 10; // grosor
     stroke("pink");
     strokeWeight(netW);
     line(tS.x, tS.y, iS.x, iS.y);
-
 
     //colicion de la estrella
     const cx = posX + estrellita.width * 0.5; // centro X estrella
@@ -128,7 +129,15 @@ function draw() {
     if (dStar < netW * 0.5 + starR * 0.45) {
       posY = 0;
       posX = random(width);
-      puntaje += sumaPuntos
+      puntaje += sumaPuntos;
+      if (puntaje > 0) {
+        mostrarLose = false;
+        mostrarWin = false;
+      } 
+      if(puntaje >= 10){
+      mostrarWin = true
+      puntaje = 0
+      }
     }
 
     //colision del fantasma
@@ -142,7 +151,37 @@ function draw() {
     if (dGhost < netW * 0.5 + gR * 0.45) {
       ghostY = 0;
       ghostX = random(width);
-      puntaje -= restaPuntos
+      puntaje -= restaPuntos;
+      if (puntaje < 0) {
+        push();
+        textFont(fuente);
+        text("you loose", width / 2, height / 2);
+        pop();
+        puntaje = 0;
+        mostrarLose = true; // NUEVO: queda “pegado” el cartel
+      }
+    }
+
+    if (mostrarLose) {
+      push();
+      noStroke();
+      fill('yellow');
+      textAlign(CENTER, CENTER);
+      textFont(fuente);
+      textSize(50)
+      text("you loose", width / 2, height / 2);
+      pop();
+    }
+
+    if(mostrarWin){
+  push();
+      noStroke();
+      fill('yellow');
+      textAlign(CENTER, CENTER);
+      textFont(fuente);
+      textSize(50)
+      text("you win", width / 2, height / 2);
+      pop();
     }
 
     /* // (opcional) tips visibles
