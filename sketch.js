@@ -48,11 +48,11 @@ function setup() {
   handPose.detectStart(video, gotHands);
 
   // inicio de la posicion de la estrella que cae
-  posX = random(width);
+  posX = random(50, width - 70);
   posY = 0;
 
   //inicio del fantasma
-  ghostX = random(width);
+  ghostX = random(50, width - 70);
   ghostY = 0;
 
   //texto
@@ -97,12 +97,12 @@ function draw() {
   // respawn si salió de pantalla
   if (posY > height) {
     posY = 0;
-    posX = random(width);
+    posX = random(50, width - 70);
   }
 
   if (ghostY > height) {
     ghostY = 0;
-    ghostX = random(width);
+    ghostX = random(50, width - 70);
   }
 
   // red entre pulgar e índice
@@ -133,10 +133,10 @@ function draw() {
       if (puntaje > 0) {
         mostrarLose = false;
         mostrarWin = false;
-      } 
-      if(puntaje >= 10){
-      mostrarWin = true
-      puntaje = 0
+      }
+      if (puntaje >= 10) {
+        mostrarWin = true;
+        puntaje = 0;
       }
     }
 
@@ -165,21 +165,21 @@ function draw() {
     if (mostrarLose) {
       push();
       noStroke();
-      fill('yellow');
+      fill("yellow");
       textAlign(CENTER, CENTER);
       textFont(fuente);
-      textSize(50)
+      textSize(50);
       text("you loose", width / 2, height / 2);
       pop();
     }
 
-    if(mostrarWin){
-  push();
+    if (mostrarWin) {
+      push();
       noStroke();
-      fill('yellow');
+      fill("yellow");
       textAlign(CENTER, CENTER);
       textFont(fuente);
-      textSize(50)
+      textSize(50);
       text("you win", width / 2, height / 2);
       pop();
     }
