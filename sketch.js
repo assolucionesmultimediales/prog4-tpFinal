@@ -23,6 +23,9 @@ let ghostX,
 const ghostSpeedY = 2;
 const GHOST_SCALE = 0.6; // más chico
 
+//fuente
+let fuente;
+
 //puntajes
 let puntaje = 0;
 let sumaPuntos = 1;
@@ -32,6 +35,7 @@ function preload() {
   handPose = ml5.handPose(); // API nueva (v1.x)
   estrellita = loadImage("assets/estrellita.gif");
   fantasma = loadImage("assets/fantasma.gif");
+  fuente = loadFont('assets/ARCADE_N.TTF')
 }
 
 function setup() {
@@ -51,10 +55,25 @@ function setup() {
 
   //texto
   textAlign(CENTER)
+  textFont(fuente)
+  rectMode(CENTER)
 }
 
 function draw() {
   image(video, 0, 0, width, height);
+
+    //puntaje
+    push()
+    fill('yellow')
+    noStroke()
+    rect(83,43,140,40,10)
+    pop()
+    push()
+    fill('#e185c7')
+    noStroke()
+    textSize(12)
+    text('PUNTAJE:' + puntaje, 80, 50)
+    pop()
 
   // estrella que cae
   noStroke();
@@ -99,13 +118,6 @@ function draw() {
     strokeWeight(netW);
     line(tS.x, tS.y, iS.x, iS.y);
 
-    //puntaje
-    push()
-    fill('white')
-    noStroke()
-    textSize(20)
-    text('PUNTAJE: ' + puntaje, 80, 50)
-    pop()
 
     //colicion de la estrella
     const cx = posX + estrellita.width * 0.5; // centro X estrella
