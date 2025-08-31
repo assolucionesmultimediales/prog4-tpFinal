@@ -22,7 +22,7 @@ let ghostX,
   ghostY = 0;
 let ghostSpeedY = 7;
 const GHOST_SCALE = 0.6; // más chico
-let contadorFantasmas= 0;
+let contadorFantasmas = 0;
 
 //fuente
 let fuente;
@@ -78,6 +78,34 @@ function draw() {
   text("PUNTAJE:" + puntaje, 80, 50);
   pop();
 
+  //muestro cantidad de estrellas y fantasmas
+  //estrellas
+  push();
+  noStroke();
+  textFont(fuente);
+  textSize(14);
+  textAlign(CENTER);
+  fill(255); 
+  iconX = 10;
+  iconY = 81;
+  textAlign(LEFT, CENTER);
+  image(estrellita, iconX, iconY - 1, 28, 28); 
+  text(":" + contadorEstrellas, iconX + 24, iconY + 15);  
+  pop();
+
+  //fantasmas
+  push()
+    noStroke();
+  textFont(fuente);
+  textSize(14);
+  textAlign(CENTER);
+  fill(255); 
+  iconX = 10;
+  iconY = 120;
+  textAlign(LEFT, CENTER);
+  image(fantasma, iconX, iconY - 1, 20, 20); 
+  text(":" + contadorFantasmas, iconX + 24, iconY + 11);
+  pop()
   // estrella que cae
   noStroke();
   //fill(random(255), random(255), random(255));
@@ -132,7 +160,8 @@ function draw() {
       posX = random(50, width - 70);
       velocidad += 0.2;
       puntaje += sumaPuntos;
-      contadorEstrellas++
+      contadorEstrellas++;
+
       if (puntaje > 0) {
         mostrarLose = false;
         mostrarWin = false;
@@ -145,7 +174,6 @@ function draw() {
     }
 
     //colision del fantasma
-    //colision del fantasma
     const gW = fantasma.width * GHOST_SCALE; // ancho escalado
     const gH = fantasma.height * GHOST_SCALE; // alto escalado
     const gcx = ghostX + gW * 0.5; // centro X fantasma
@@ -155,14 +183,17 @@ function draw() {
     const dGhost = pointSegDist(gcx, gcy, tS.x, tS.y, iS.x, iS.y);
     if (dGhost < netW * 0.5 + gR * 0.45) {
       // respawn fantasma
-      ghostY = 0; // 
+      ghostY = 0; //
       ghostX = random(50, width - 70);
       //cada captura lo hace caer más lento (mínimo 1)
       ghostSpeedY = max(1, ghostSpeedY - 0.5);
       puntaje -= restaPuntos;
-      contadorFantasmas ++
+      contadorFantasmas++;
+      if(puntaje === 0 ){
+        contadorFantasmas = 0;
+      }
       if (puntaje <= 0) {
-         ghostSpeedY = 7;
+        ghostSpeedY = 7;
         push();
         textFont(fuente);
         text("you loose", width / 2, height / 2);
@@ -182,6 +213,8 @@ function draw() {
       textSize(50);
       text("you loose", width / 2, height / 2);
       pop();
+      contadorEstrellas = 0;
+      contadorFantasmas = 0;
     }
 
     if (mostrarWin) {
@@ -193,6 +226,8 @@ function draw() {
       textSize(50);
       text("you win", width / 2, height / 2);
       pop();
+      contadorEstrellas = 0;
+      contadorFantasmas = 0
     }
 
     /* // (opcional) tips visibles
