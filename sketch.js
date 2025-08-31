@@ -15,12 +15,13 @@ let smIndex = { x: 0, y: 0, ready: false };
 
 //estrellita
 let estrellita;
+let velocidad = 2;
 
 //fantasma
 let fantasma;
 let ghostX,
   ghostY = 0;
-const ghostSpeedY = 2;
+let ghostSpeedY = 7;
 const GHOST_SCALE = 0.6; // más chico
 
 //fuente
@@ -82,7 +83,7 @@ function draw() {
   //fill(random(255), random(255), random(255));
   //circle(posX, posY, dropR * 3);
   image(estrellita, posX, posY);
-  posY += speedY;
+  posY += speedY * velocidad;
 
   // fantasma más chico
   image(
@@ -128,7 +129,8 @@ function draw() {
     const dStar = pointSegDist(cx, cy, tS.x, tS.y, iS.x, iS.y);
     if (dStar < netW * 0.5 + starR * 0.45) {
       posY = 0;
-      posX = random(width);
+      posX = random(50, width - 70);
+      velocidad += 0.2;
       puntaje += sumaPuntos;
       if (puntaje > 0) {
         mostrarLose = false;
@@ -137,9 +139,11 @@ function draw() {
       if (puntaje >= 10) {
         mostrarWin = true;
         puntaje = 0;
+        velocidad = 1;
       }
     }
 
+    //colision del fantasma
     //colision del fantasma
     const gW = fantasma.width * GHOST_SCALE; // ancho escalado
     const gH = fantasma.height * GHOST_SCALE; // alto escalado
@@ -149,16 +153,21 @@ function draw() {
 
     const dGhost = pointSegDist(gcx, gcy, tS.x, tS.y, iS.x, iS.y);
     if (dGhost < netW * 0.5 + gR * 0.45) {
-      ghostY = 0;
-      ghostX = random(width);
+      // respawn fantasma
+      ghostY = 0; // 
+      ghostX = random(50, width - 70);
+      //cada captura lo hace caer más lento (mínimo 1)
+      ghostSpeedY = max(1, ghostSpeedY - 0.5);
       puntaje -= restaPuntos;
-      if (puntaje < 0) {
+      if (puntaje <= 0) {
+         ghostSpeedY = 7;
         push();
         textFont(fuente);
         text("you loose", width / 2, height / 2);
         pop();
         puntaje = 0;
-        mostrarLose = true; // NUEVO: queda “pegado” el cartel
+        mostrarLose = true;
+        mostrarWin = false;
       }
     }
 
