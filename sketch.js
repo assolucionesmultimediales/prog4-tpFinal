@@ -8,14 +8,13 @@ let posX,
   posY = 0;
 const speedY = 2;
 const dropR = 10; // radio fijo para detectar bien
+let estrellita;
+let velocidad = 2;
+let contadorEstrellas = 0;
 
 // suavizado de tips, aunque no los muestre, si los saco, el programa deja de correr
 let smThumb = { x: 0, y: 0, ready: false };
 let smIndex = { x: 0, y: 0, ready: false };
-
-//estrellita
-let estrellita;
-let velocidad = 2;
 
 //fantasma
 let fantasma;
@@ -23,6 +22,7 @@ let ghostX,
   ghostY = 0;
 let ghostSpeedY = 7;
 const GHOST_SCALE = 0.6; // más chico
+let contadorFantasmas= 0;
 
 //fuente
 let fuente;
@@ -132,6 +132,7 @@ function draw() {
       posX = random(50, width - 70);
       velocidad += 0.2;
       puntaje += sumaPuntos;
+      contadorEstrellas++
       if (puntaje > 0) {
         mostrarLose = false;
         mostrarWin = false;
@@ -159,6 +160,7 @@ function draw() {
       //cada captura lo hace caer más lento (mínimo 1)
       ghostSpeedY = max(1, ghostSpeedY - 0.5);
       puntaje -= restaPuntos;
+      contadorFantasmas ++
       if (puntaje <= 0) {
          ghostSpeedY = 7;
         push();
@@ -244,3 +246,6 @@ function pointSegDist(px, py, ax, ay, bx, by) {
 function gotHands(results) {
   hands = results;
 }
+/*falta agregar cantidad de estrellas y fantasmas que se colectaron
+temporizador para aumentar dificultad
+desarrolas mas la interfaz*/
